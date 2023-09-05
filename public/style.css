@@ -22,27 +22,7 @@ body{
 
 
 }
-.search{
-    display: flex;
-    mix-blend-mode: multiply;
 
-
-}
-
-input{
-    border: none;
-    text-align: center;
-    
-}
-
-::placeholder{
-    color:green;
-}
-
-button{
-    border: none;
-    background:none;
-}
 .header{
     border-radius: 10px 10px 0 0;
     border-bottom: 1px solid white;

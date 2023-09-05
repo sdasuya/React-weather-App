@@ -1,48 +1,95 @@
-import React,{useState} from "react";
-// import SearchBar from "./SearchBar";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+// import ReactAnimatedWeather from "react-animated-weather";
+
+import SearchBar from "./SearchBar";
 
 
-function Header(props){
 
-    const[oldName,setName] = useState("");
+function Header(){
+    const [weatherr, setWeather] = useState({});
+    const [query, setQuery] = useState("dasuya");
+    // const [photos, setPhotos] = useState([]);
+    useEffect(() => {
+      ifClicked();
+    }, []);
+  
+
+    const search = async (event) => {
+        if (event.key === "Enter") {
+          event.preventDefault();
+          setQuery("");
+          setWeather({ ...weatherr, loading: true });
+        //   const apiKey = "b03a640e5ef6980o4da35b006t5f2942";
+          const url = `http://api.openweathermap.org/data/2.5/weather?q=${query}&appid=1fe1feaae7c13da06123fde728b01b3d&units=metric`;
+    
+            axios
+            .get(url)
+            .then((res) => {
+              console.log("res", res);
+              setWeather({ data: res.data, loading: false, error: false });
+            })
+            .catch((error) => {
+              setWeather({ ...weatherr, data: {}, error: true });
+              setQuery("");
+              console.log("error", error);
+            });
+        }
+      };
 
 
-    function handleChange(event){
-        const{value} = event.target;
-        setName(value);
+ function ifClicked() {
+    fetch(
+      `http://api.openweathermap.org/data/2.5/weather?q=${query}&appid=1fe1feaae7c13da06123fde728b01b3d&units=metric`
+    )
+      .then((res) => {
+        if (res.ok) {
+          console.log(res.status);
+          return res.json();
+        } else {
+          if (res.status === 404) {
+            return alert("Oops, there seems to be an error!(wrong location)");
+          }
+          alert("Oops, there seems to be an error!");
+          throw new Error("You have an error");
+        }
+      })
+      .then((object) => {
+        setWeather(object);
+        console.log(weatherr);
+      })
+      .catch((error) => console.log(error));
     }
 
+    // list[0].weather[0].id
 
 
+    // console.log(weather?.description);
+    console.log(weatherr?.wind?.speed);
 
+  
     return(
+        <div>
+        <SearchBar query={query} setQuery={setQuery} search={search} />
        
         <div className="header">
-     <div className="search">
-        <button type="submit">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
-                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-              </svg>
-        <input 
-        type="text" 
-        onChange={handleChange}
-          value={oldName}
-        placeholder="Search City ..." />
-        </button>
-        </div>
-        {/* <SearchBar /> */}
-        <h1>{oldName}</h1>
+          
+        <h1>{query} , {weatherr?.sys?.country}</h1>
       
-        <p>fog</p>
-        <h2>21°C</h2>
+        <p>{weatherr?.weather?.[0].main}</p>
+       
+        <h2>{weatherr?.main?.temp}°C</h2>
         <div className="pressure">
-            <p>Pressue: 1018</p>
+            <p>Pressue: {weatherr?.main?.pressure}</p>
             <p> | </p>
-            <p>Humidity: 67°C</p>
+            <p>Humidity: {weatherr?.main?.humidity}°C</p>
+            <p> | </p>
+            <p>WindSpeed: {weatherr?.wind?.speed}</p>
+        </div>
         </div>
         </div>
 
-
+       
 
     );
 

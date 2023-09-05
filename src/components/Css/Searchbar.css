@@ -1,0 +1,49 @@
+.search input{
+    margin-top: 20px;
+    border-radius: 10px;
+    width: 50%;
+    height: 30px;
+    border: none;
+    background-color:rgb(246, 253, 254);
+    /* mix-blend-mode: multiply; */
+    font-weight: bold;
+
+}
+
+button{
+    
+    border: none;
+    background:none;
+    
+}
+
+.submit button{
+    width: 200px;
+    height: 20px;
+}
+
+
+/* .search{
+   width: 50%;
+   height: 30px;
+   margin:20px auto;
+background-color:white;
+
+}
+
+
+input{
+    border: none;
+    text-align: center;
+    
+    
+}
+
+::placeholder{
+    color:green;
+}
+
+button{
+    border: none;
+    background:none;
+} */
