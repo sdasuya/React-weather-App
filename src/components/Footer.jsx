@@ -1,6 +1,6 @@
 import React from "react";
 
-function footer(){
+function footer(query,setQuery){
     return (
 <div className="footer">
 <div className="days">
@@ -11,7 +11,8 @@ function footer(){
     <p>Day After tomorrow</p>
     </div>
     <div className="temp">
-<p>21°</p>
+<p value={query}
+        onChange={(e) => setQuery(e.target.value)}>21°</p>
 <p>28°</p>
 <p>31°</p>
 </div>

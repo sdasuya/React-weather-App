@@ -3,48 +3,30 @@ import axios from "axios";
 // import ReactAnimatedWeather from "react-animated-weather";
 
 import SearchBar from "./SearchBar";
+import Footer from "./Footer";
 
 
 
 function Header(){
     const [weatherr, setWeather] = useState({});
-    const [query, setQuery] = useState("dasuya");
+    const [query, setQuery] = useState("seattle");
+    const [icon,setIcon]= useState();
+
     // const [photos, setPhotos] = useState([]);
     useEffect(() => {
       ifClicked();
+   
     }, []);
   
 
-    const search = async (event) => {
-        if (event.key === "Enter") {
-          event.preventDefault();
-          setQuery("");
-          setWeather({ ...weatherr, loading: true });
-        //   const apiKey = "b03a640e5ef6980o4da35b006t5f2942";
-          const url = `http://api.openweathermap.org/data/2.5/weather?q=${query}&appid=1fe1feaae7c13da06123fde728b01b3d&units=metric`;
+ function ifClicked(e) {
     
-            axios
-            .get(url)
-            .then((res) => {
-              console.log("res", res);
-              setWeather({ data: res.data, loading: false, error: false });
-            })
-            .catch((error) => {
-              setWeather({ ...weatherr, data: {}, error: true });
-              setQuery("");
-              console.log("error", error);
-            });
-        }
-      };
-
-
- function ifClicked() {
     fetch(
       `http://api.openweathermap.org/data/2.5/weather?q=${query}&appid=1fe1feaae7c13da06123fde728b01b3d&units=metric`
     )
       .then((res) => {
         if (res.ok) {
-          console.log(res.status);
+        //   console.log(res.status);
           return res.json();
         } else {
           if (res.status === 404) {
@@ -56,27 +38,32 @@ function Header(){
       })
       .then((object) => {
         setWeather(object);
-        console.log(weatherr);
+        setIcon(weatherr.weather[0].icon);
       })
+      
       .catch((error) => console.log(error));
     }
 
-    // list[0].weather[0].id
+  
 
-
-    // console.log(weather?.description);
-    console.log(weatherr?.wind?.speed);
+    let s2 = "https://openweathermap.org/img/wn/"+icon+"@2x.png";
 
   
+
+
+// list[8].dt_txt
+  
     return(
+       
         <div>
-        <SearchBar query={query} setQuery={setQuery} search={search} />
+        <SearchBar query={query} setQuery={setQuery} search={ifClicked} />
        
         <div className="header">
           
-        <h1>{query} , {weatherr?.sys?.country}</h1>
+        <h1>{weatherr?.name} , {weatherr?.sys?.country}</h1>
       
         <p>{weatherr?.weather?.[0].main}</p>
+        <img src={s2}/>
        
         <h2>{weatherr?.main?.temp}°C</h2>
         <div className="pressure">
@@ -90,7 +77,7 @@ function Header(){
         </div>
 
        
-
+// list[8].main.temp
     );
 
 }
